@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -e
+
+test -z "$GO_ENVIRONMENT_NAME" && echo "Variável GO_ENVIRONMENT_NAME não está definida" && ERROR=1
+test -z "$ANSIBLE_VAULT_PASSWORD" && echo "Variável ANSIBLE_VAULT_PASSWORD não está definida" && ERROR=1
+
+test -z "$ERROR"
+
+echo_password() {
+  echo $ANSIBLE_VAULT_PASSWORD
+}
+
+ansible-playbook -i "_$GO_ENVIRONMENT_NAME" playbook_deploy.yml --vault-password-file _go/echo_password

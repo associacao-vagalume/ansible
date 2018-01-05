@@ -1,0 +1,37 @@
+---
+- hosts:
+  - webserver
+  tasks:
+    - set_fact:
+        site_version: "{{ lookup('env', 'GO_PIPELINE_LABEL') }}"
+
+    - name: Falha se versão do site não estiver definida
+      fail:
+        msg: "A variável GO_PIPELINE_LABEL não está definida"
+      when: site_version == ''
+
+    - name: Copia o conteúdo do site para o servidor
+      synchronize:
+        src: ../_site/
+        dest: /home/ssh_user/public_html_{{ site_version }}
+
+    - name: Cria link para release atual
+      file:
+        src: ~/public_html_{{ site_version }}
+        dest: ~/public_html
+        force: yes
+        state: link
+
+    - name: Resgata a versão do site atual
+      uri:
+        url: http://{{ inventory_hostname }}/VERSAO.txt
+        status: 200
+        return_content: yes
+      register: actual_version
+      delegate_to: 127.0.0.1
+
+    - name: Falha se versão não for a esperada
+      fail:
+        msg: "A versão em deploy é diferente da esperada. {{ actual_version.content |trim }} != {{ site_version }}"
+      when: (actual_version.content | trim) != site_version
+

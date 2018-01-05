@@ -1,0 +1,2 @@
+---
+user: "{{ vault_user }}"

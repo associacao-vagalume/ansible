@@ -1,0 +1,6 @@
+---
+webserver:
+  hosts:
+    acceptance:
+      ansible_user: ssh_user
+
