@@ -1,8 +1,3 @@
----
-webserver:
-  hosts:
-    vagalume.org.br:
-      ansible_user: "{{ user }}"
-  vars:
-    ansible_python_interpreter: /usr/bin/python2.6
+[webserver]
+vagalume.org.br
 

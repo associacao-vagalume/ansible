@@ -1,2 +1,3 @@
 ---
-user: "{{ vault_user }}"
+apache_dir: "/home/ssh_user/public_html"
+
