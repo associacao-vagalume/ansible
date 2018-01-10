@@ -1,0 +1,25 @@
+---
+# O deploy para uma nova versão é feito atualizando o link simbólico, e iria falhar
+# caso o diretório do apache for de fato um diretório e não um link.
+
+- name: Verifica o tipo do diretório apache
+  stat:
+    path: "{{ apache_dir }}"
+  register: p
+
+- name: Valida se diretório do apache é realmente um diretório
+  set_fact:
+    is_dir: "{{ p.stat.isdir is defined and p.stat.isdir }}"
+
+- name: Renomeia o diretório do apache
+  command: mv {{ apache_dir }} {{ apache_dir }}_original
+  when: is_dir
+
+- name: Faz um link simbólico apontando para o diretório renomeado
+  file:
+    src: "{{ apache_dir }}_original"
+    dest: "{{ apache_dir }}"
+    force: yes
+    state: link
+  when: is_dir
+

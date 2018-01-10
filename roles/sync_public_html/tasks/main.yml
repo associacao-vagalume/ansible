@@ -1,0 +1,26 @@
+---
+- name: Lê versão do site do ambiente
+  set_fact:
+    site_version: "{{ lookup('env', 'GO_PIPELINE_LABEL') }}"
+
+- name: Falha se versão do site não estiver definida
+  fail:
+    msg: "A variável GO_PIPELINE_LABEL não está definida"
+  when: site_version == ''
+
+- name: Define o diretório onde será feito o deploy
+  set_fact:
+    deploy_dir: "{{ apache_dir }}_{{ site_version }}"
+
+- name: Copia o conteúdo do site para o servidor
+  synchronize:
+    src: ../_site/
+    dest: "{{ deploy_dir }}"
+
+- name: Cria link para release atual
+  file:
+    src: "{{ deploy_dir }}"
+    dest: "{{ apache_dir }}"
+    force: yes
+    state: link
+
