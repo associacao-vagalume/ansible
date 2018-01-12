@@ -1,7 +1,7 @@
 ---
 - name: Lê versão do site do ambiente
   set_fact:
-    site_version: "{{ lookup('env', 'GO_PIPELINE_LABEL') }}"
+    site_version: "{{ lookup('env', 'GO_DEPENDENCY_LABEL_COMMIT') }}"
 
 - name: Falha se versão do site não estiver definida
   fail:
