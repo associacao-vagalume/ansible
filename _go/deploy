@@ -11,4 +11,4 @@ echo_password() {
   echo $ANSIBLE_VAULT_PASSWORD
 }
 
-ansible-playbook -i "_$GO_ENVIRONMENT_NAME" playbook_deploy.yml --vault-password-file _go/echo_password
+ansible-playbook -i "env/$GO_ENVIRONMENT_NAME" playbook_deploy.yml --vault-password-file _go/echo_password

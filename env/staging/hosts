@@ -1,0 +1,2 @@
+[webserver]
+staging.vagalume.org.br ansible_user="{{ vault_user }}" ansible_python_interpreter=/usr/bin/python2.6

@@ -1,0 +1,2 @@
+[webserver]
+acceptance ansible_user=ssh_user

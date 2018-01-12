@@ -1,4 +1,0 @@
----
-ansible_user: ssh_user
-ansible_port: 2222
-
