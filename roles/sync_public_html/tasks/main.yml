@@ -5,7 +5,7 @@
 
 - name: Falha se versão do site não estiver definida
   fail:
-    msg: "A variável GO_PIPELINE_LABEL não está definida"
+    msg: "A variável GO_DEPENDENCY_LABEL_COMMIT não está definida"
   when: site_version == ''
 
 - name: Define o diretório onde será feito o deploy
