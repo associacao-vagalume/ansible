@@ -1,0 +1,24 @@
+---
+- hosts:
+  - webserver
+  tasks:
+    - name: 'Obtém script acme.sh'
+      git:
+        repo: https://github.com/Neilpang/acme.sh.git
+        dest: ~/tmp/acme.sh/
+
+    - name: 'Instala o script acme.sh'
+      command: sh acme.sh --install
+      args:
+        chdir: ~/tmp/acme.sh/
+        creates: ~/.acme.sh/acme.sh
+
+    - name: 'Corrige job cron para executar acme.sh com o bash'
+      shell: crontab -l | sed '/.*\* "\/home.*\.acme\.sh/s/"\/home/bash "\/home/' | crontab -
+
+    - name: "Requisita os certificados do Let's Encrypt"
+      command: sh acme.sh --issue -d {{ inventory_hostname }} -d www.{{ inventory_hostname}} -w /home/{{ ansible_ssh_user }}/public_html
+      args:
+        chdir: ~/tmp/acme.sh/
+        creates: ~/.acme.sh/{{ inventory_hostname }}/{{ inventory_hostname }}.cer
+
